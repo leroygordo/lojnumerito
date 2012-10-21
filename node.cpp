@@ -15,6 +15,12 @@ bool node::state::is_goal(){
 list<tuple<node::state,char> > node::state::succ(){
 }
 
+node::node(){
+}
+
+node::~node(){
+}
+
 node make_root(){
 }
   

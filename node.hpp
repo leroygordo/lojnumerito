@@ -23,6 +23,12 @@ class node {
   char action;
   int cost;
   
+  
+  public:
+  explicit node();
+  
+  ~node();
+  
   node make_root();
   
   node make_node(node n, char a, state s);
