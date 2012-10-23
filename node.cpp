@@ -34,9 +34,8 @@ class node {
 	  return true;
 	}
 	
-	char* succ(){
-	  char succ_[4];
-	  char *_succ;
+	char* succ() {
+	  char* succ_ = (char *) malloc(4 * sizeof(char));
 	  if((blank - 4) >= 0) {
 	    succ_[0] = 'U';
 	  }
@@ -64,9 +63,8 @@ class node {
 	  else {
 	    succ_[3] = 'W';	
 	  }
-	  
-	  _succ = succ_;
-	  return _succ;
+
+	  return succ_;
 	}
   };
   
