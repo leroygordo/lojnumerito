@@ -53,5 +53,9 @@ int main(int argc,char* argv[]) {
   cout << suc[1] << endl;
   cout << suc[2] << endl;
   cout << suc[3] << endl;
+  
+  node::state n = action(s,'U');
+  
+  cout << n.blank << endl;
 
 }

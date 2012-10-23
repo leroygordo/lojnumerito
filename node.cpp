@@ -38,9 +38,6 @@ class node {
 	  char succ_[4];
 	  char *_succ;
 	  if((blank - 4) >= 0) {
-	    //state s = state(board);
-		//swap(s.board[blank],s.board[blank-4]);
-		//s.blank = blank - 4;
 	    succ_[0] = 'U';
 	  }
 	  else {
@@ -48,9 +45,6 @@ class node {
 	  }
 	  
 	  if((blank + 4) <= 15) {
-	  	//state s = state(board);
-		//swap(s.board[blank],s.board[blank+4]);		
-		//s.blank = blank + 4;
 	    succ_[1] = 'D';
 	  }
 	  else {
@@ -58,9 +52,6 @@ class node {
 	  }
 	  
 	  if((blank + 1) % 4 != 0) {
-	  	//state s = state(board);
-		//swap(s.board[blank],s.board[blank+1]);	  
-		//s.blank = blank + 1;
 	    succ_[2] = 'R';
 	  }
 	  else { 
@@ -68,9 +59,6 @@ class node {
 	  }
 	  
 	  if(!(blank % 4 == 0)) {
-	  	//state s = state(board);
-		//swap(s.board[blank],s.board[blank-1]);
-		//s.blank = blank - 1;
 	    succ_[3] = 'L';
 	  }
 	  else {
@@ -123,6 +111,25 @@ node make_node(node *n, char a, node::state s,int c){
   return n_;
 }
 
-node::state action(){
-  
+node::state action(node::state s, char a){
+  node::state new_state = node::state(s.board);
+  switch(a){
+    case 'U':
+		swap(new_state.board[s.blank],new_state.board[s.blank-4]);
+		new_state.blank = s.blank - 4;
+		break;
+	case 'D':
+		swap(new_state.board[s.blank],new_state.board[s.blank+4]);
+		new_state.blank = s.blank + 4;
+		break;	
+	case 'L':
+		swap(new_state.board[s.blank],new_state.board[s.blank+1]);
+		new_state.blank = s.blank + 1;
+		break;	
+	case 'R':
+		swap(new_state.board[s.blank],new_state.board[s.blank-1]);
+		new_state.blank = s.blank - 1;
+		break;	
+  }
+  return new_state;
 }
