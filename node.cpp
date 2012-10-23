@@ -34,33 +34,51 @@ class node {
 	  return true;
 	}
 	
-	list<pair<node::state,char> > succ(){
-	  list<pair<node::state,char> > succ_;
+	char* succ(){
+	  char succ_[4];
+	  char *_succ;
 	  if((blank - 4) >= 0) {
-	    state s = state(board);
-		swap(s.board[blank],s.board[blank-4]);
-		s.blank = blank - 4;
-	    succ_.push_back(make_pair(s,'U'));
+	    //state s = state(board);
+		//swap(s.board[blank],s.board[blank-4]);
+		//s.blank = blank - 4;
+	    succ_[0] = 'U';
 	  }
+	  else {
+	    succ_[0] = 'W';
+	  }
+	  
 	  if((blank + 4) <= 15) {
-	  	state s = state(board);
-		swap(s.board[blank],s.board[blank+4]);		
-		s.blank = blank + 4;
-	    succ_.push_back(make_pair(s,'D'));
+	  	//state s = state(board);
+		//swap(s.board[blank],s.board[blank+4]);		
+		//s.blank = blank + 4;
+	    succ_[1] = 'D';
 	  }
+	  else {
+	    succ_[1] = 'W';	  
+	  }
+	  
 	  if((blank + 1) % 4 != 0) {
-	  	state s = state(board);
-		swap(s.board[blank],s.board[blank+1]);	  
-		s.blank = blank + 1;
-	    succ_.push_back(make_pair(s,'R'));
+	  	//state s = state(board);
+		//swap(s.board[blank],s.board[blank+1]);	  
+		//s.blank = blank + 1;
+	    succ_[2] = 'R';
 	  }
+	  else { 
+	    succ_[2] = 'W';
+	  }
+	  
 	  if(!(blank % 4 == 0)) {
-	  	state s = state(board);
-		swap(s.board[blank],s.board[blank-1]);
-		s.blank = blank - 1;
-	    succ_.push_back(make_pair(s,'L'));
+	  	//state s = state(board);
+		//swap(s.board[blank],s.board[blank-1]);
+		//s.blank = blank - 1;
+	    succ_[3] = 'L';
 	  }
-	  return succ_;
+	  else {
+	    succ_[3] = 'W';	
+	  }
+	  
+	  _succ = succ_;
+	  return _succ;
 	}
   };
   
@@ -80,16 +98,6 @@ class node {
   
   ~node(){}
   
-  node make_root(node::state s){
-    node n = node(s,0,0,0);
-    return n;
-  }
-  
-  node make_node(node *n, char a, node::state s,int c){
-    node n_ = node(s,n,a,c);
-    return n_;
-  }
-  
   list<char> extract_solution(){
     list<char> path;
     node *n_ = parent;
@@ -103,4 +111,18 @@ class node {
 
 bool operator<(const node &n1, const node &n2) {
  return (n1.cost < n2.cost);
+}
+
+node make_root(node::state s){
+  node n = node(s,0,0,0);
+  return n;
+ }
+  
+node make_node(node *n, char a, node::state s,int c){
+  node n_ = node(s,n,a,c);
+  return n_;
+}
+
+node::state action(){
+  
 }

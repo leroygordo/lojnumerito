@@ -43,9 +43,15 @@ int main(int argc,char* argv[]) {
   char b[16] = {1,12,2,3,4,5,6,7,8,9,10,11,0,13,14,15};
   node::state s = node::state(b);
   
-  node* r; 
-  r->make_root(s);
+  char* suc = s.succ();
   
-  cout << r->cost << endl;
+  node r = make_root(s);
+  
+  node c = make_node(&r,'U',s,8);
+  
+  cout << suc[0] << endl;
+  cout << suc[1] << endl;
+  cout << suc[2] << endl;
+  cout << suc[3] << endl;
 
 }
