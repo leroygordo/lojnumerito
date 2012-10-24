@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory>
+#include "manhattan.cpp"
 
 using namespace std;
 
@@ -13,59 +14,61 @@ class node {
   public:
   struct state {
     char board[16];
-	int blank;
-	
-	state(char b[]){
-	  for (int i = 0 ; i < 16 ; i++) {
-	    board[i] = b[i];
-		if ((int) board[i] == 0)
-		  blank = i;
-	  }
-	}
+    int blank;
+    
+    state(char b[]){
+      mapper(b);
+      for (int i = 0 ; i < 16 ; i++) {
+        board[i] = b[i];
+        if (board[i] == 'x')
+	  blank = i;
+      }
+    }
 	
     ~state(){}
 	
-	bool is_goal(){
-	  for(int i = 0; i <= 15 ; i++) {
-	    if((int) board[i] != i) {
-		  return false;
-		}
-	  }
-	  return true;
+    bool is_goal(){
+      mapper(board);
+      for(int i = 0; i <= 15 ; i++) {
+	if(map_[i] != i) {
+	  return false;
 	}
+      }
+      return true;
+    }
 	
-	char* succ() {
-	  char* succ_ = (char *) malloc(4 * sizeof(char));
-	  if((blank - 4) >= 0) {
-	    succ_[0] = 'U';
-	  }
-	  else {
-	    succ_[0] = 'W';
-	  }
-	  
-	  if((blank + 4) <= 15) {
-	    succ_[1] = 'D';
-	  }
-	  else {
-	    succ_[1] = 'W';	  
-	  }
-	  
-	  if((blank + 1) % 4 != 0) {
-	    succ_[2] = 'R';
-	  }
-	  else { 
-	    succ_[2] = 'W';
-	  }
-	  
-	  if(!(blank % 4 == 0)) {
-	    succ_[3] = 'L';
-	  }
-	  else {
-	    succ_[3] = 'W';	
-	  }
-
-	  return succ_;
-	}
+    char* succ() {
+      char* succ_ = (char *) malloc(4 * sizeof(char));
+      if((blank - 4) >= 0) {
+	succ_[0] = 'U';
+      }
+      else {
+	succ_[0] = 'W';
+      }
+      
+      if((blank + 4) <= 15) {
+	succ_[1] = 'D';
+      }
+      else {
+	succ_[1] = 'W';	  
+      }
+      
+      if((blank + 1) % 4 != 0) {
+	succ_[2] = 'R';
+      }
+      else { 
+	succ_[2] = 'W';
+      }
+      
+      if(!(blank % 4 == 0)) {
+	succ_[3] = 'L';
+      }
+      else {
+	succ_[3] = 'W';	
+      }
+      
+      return succ_;
+    }
   };
   
   public:
@@ -95,9 +98,13 @@ class node {
   }  
 };
 
-bool operator<(const node &n1, const node &n2) {
- return (n1.cost < n2.cost);
-}
+
+class CompareNode {
+public:
+  bool operator()(const node &n1, const node &n2) {
+    return (n1.cost < n2.cost);
+  }
+};
 
 node make_root(node::state s){
   node n = node(s,0,0,0);
@@ -105,29 +112,29 @@ node make_root(node::state s){
  }
   
 node make_node(node *n, char a, node::state s,int c){
-  node n_ = node(s,n,a,c);
+  node n_ = node(s,n,a,(n->cost+1)+c);
   return n_;
 }
 
 node::state action(node::state s, char a){
   node::state new_state = node::state(s.board);
   switch(a){
-    case 'U':
-		swap(new_state.board[s.blank],new_state.board[s.blank-4]);
-		new_state.blank = s.blank - 4;
-		break;
-	case 'D':
-		swap(new_state.board[s.blank],new_state.board[s.blank+4]);
-		new_state.blank = s.blank + 4;
-		break;	
-	case 'L':
-		swap(new_state.board[s.blank],new_state.board[s.blank+1]);
-		new_state.blank = s.blank + 1;
-		break;	
-	case 'R':
-		swap(new_state.board[s.blank],new_state.board[s.blank-1]);
-		new_state.blank = s.blank - 1;
-		break;	
+  case 'U':
+    swap(new_state.board[s.blank],new_state.board[s.blank-4]);
+    new_state.blank = s.blank - 4;
+    break;
+  case 'D':
+    swap(new_state.board[s.blank],new_state.board[s.blank+4]);
+    new_state.blank = s.blank + 4;
+    break;	
+  case 'L':
+    swap(new_state.board[s.blank],new_state.board[s.blank+1]);
+    new_state.blank = s.blank + 1;
+    break;	
+  case 'R':
+    swap(new_state.board[s.blank],new_state.board[s.blank-1]);
+    new_state.blank = s.blank - 1;
+    break;	
   }
   return new_state;
 }
