@@ -11,91 +11,146 @@
 using namespace std;
 
 class node {
-  public:
-  struct state {
-    char board[16];
-    int blank;
-    
-    state(char b[]){
-      mapper(b);
-      for (int i = 0 ; i < 16 ; i++) {
-        board[i] = b[i];
-        if (board[i] == 'x')
-	  blank = i;
-      }
-    }
-	
-    ~state(){}
-	
-    bool is_goal(){
-      mapper(board);
-      for(int i = 0; i <= 15 ; i++) {
-	if(map_[i] != i) {
-	  return false;
-	}
-      }
-      return true;
-    }
-	
-    char* succ() {
-      char* succ_ = (char *) malloc(4 * sizeof(char));
-      if((blank - 4) >= 0) {
-	succ_[0] = 'U';
-      }
-      else {
-	succ_[0] = 'W';
-      }
-      
-      if((blank + 4) <= 15) {
-	succ_[1] = 'D';
-      }
-      else {
-	succ_[1] = 'W';	  
-      }
-      
-      if((blank + 1) % 4 != 0) {
-	succ_[2] = 'R';
-      }
-      else { 
-	succ_[2] = 'W';
-      }
-      
-      if(!(blank % 4 == 0)) {
-	succ_[3] = 'L';
-      }
-      else {
-	succ_[3] = 'W';	
-      }
-      
-      return succ_;
-    }
-  };
-  
-  public:
-  state s;
+public:
+  char board[16];
+  int blank;
   node *parent;
   char action;
   int cost;
 
   node()
-    :s(0),parent(0),action(0),cost(0)
-  {}
-  
-  node(node::state &s, node *p, char a, int c)
-    :s(s),parent(p),action(a),cost(c)
-  {}
-  
-  ~node(){}
-  
-  list<char> extract_solution(){
-    list<char> path;
-    node *n_ = parent;
-    while (!n_->parent) {
-      path.push_front(n_->action);
-	  n_ = n_->parent;
+    :blank(0),parent(0),action(0),cost(0)
+  {
+  }
+
+  node(char b[], int w, node *p, char a, int c)
+    :parent(p),action(a),cost(c)
+  {
+    for (int i = 0 ; i < 16 ; i++) {
+      board[i] = b[i];
+      if (board[i] == 'x')
+	blank = i;  
     }
-    return path;
-  }  
+  }
+
+~node(){}
+
+	
+bool is_goal(){
+  for(int i = 0; i <= 15 ; i++) {
+    switch(board[i]){
+    case 'x':
+      if(i != 0) 
+	return false;
+      break; 
+    case 'a': 
+      if(i != 1) 
+	return false;
+      break;
+    case 'b': 
+      if(i != 2) 
+	return false;
+      break;
+    case 'c': 
+      if(i != 3) 
+	return false;
+      break;
+    case 'd': 
+      if(i != 4) 
+	return false;
+      break;
+    case 'e': 
+      if(i != 5) 
+	return false;
+      break;
+    case 'f': 
+      if(i != 6) 
+	return false;
+      break;
+    case 'g': 
+      if(i != 7) 
+	return false;
+      break;
+    case 'h': 
+      if(i != 8) 
+	return false;
+      break;
+    case 'i': 
+      if(i != 9) 
+	return false;
+      break;
+    case 'j': 
+      if(i != 10) 
+	return false;
+      break;
+    case 'k': 
+      if(i != 11) 
+	return false;
+      break;
+    case 'l': 
+      if(i != 12) 
+	return false;
+      break;
+    case 'm': 
+      if(i != 13) 
+	return false;
+      break;
+    case 'n': 
+      if(i != 14) 
+	return false;
+      break;
+    case 'o': 
+      if(i != 15) 
+	return false;
+      break;
+    }
+  }
+  return true;
+}
+  
+char* succ() {
+  char* succ_ = (char *) malloc(4 * sizeof(char));
+  if((blank - 4) >= 0) {
+    succ_[0] = 'U';
+  }
+  else {
+    succ_[0] = 'W';
+  }
+    
+  if((blank + 4) <= 15) {
+    succ_[1] = 'D';
+  }
+  else {
+    succ_[1] = 'W';	  
+  }
+    
+  if((blank + 1) % 4 != 0) {
+    succ_[2] = 'R';
+  }
+  else { 
+    succ_[2] = 'W';
+  }
+    
+  if(!(blank % 4 == 0)) {
+    succ_[3] = 'L';
+  }
+  else {
+    succ_[3] = 'W';	
+  }
+    
+  return succ_;
+}
+
+  
+list<char> extract_solution(){
+  list<char> path;
+  node *n_ = parent;
+  while (!n_->parent) {
+    path.push_front(n_->action);
+    n_ = n_->parent;
+  }
+  return path;
+}  
 };
 
 
@@ -106,34 +161,31 @@ public:
   }
 };
 
-node make_root(node::state s){
-  node n = node(s,0,0,0);
+node make_root(char s[]){
+  node n = node(s,0,0,0,0);
   return n;
  }
   
-node make_node(node *n, char a, node::state s,int c){
-  node n_ = node(s,n,a,(n->cost+1)+c);
+node make_node(node *n, char a, char s[],int c){
+  node n_ = node(s,0,n,a,(n->cost+1)+c);
   return n_;
 }
 
-node::state action(node::state s, char a){
-  node::state new_state = node::state(s.board);
+char* action(char s[], int blank, char a){
+  char *new_state;
+  new_state = s;
   switch(a){
   case 'U':
-    swap(new_state.board[s.blank],new_state.board[s.blank-4]);
-    new_state.blank = s.blank - 4;
+    swap(new_state[blank],new_state[blank-4]);
     break;
   case 'D':
-    swap(new_state.board[s.blank],new_state.board[s.blank+4]);
-    new_state.blank = s.blank + 4;
+    swap(new_state[blank],new_state[blank+4]);
     break;	
   case 'L':
-    swap(new_state.board[s.blank],new_state.board[s.blank+1]);
-    new_state.blank = s.blank + 1;
+    swap(new_state[blank],new_state[blank+1]);
     break;	
   case 'R':
-    swap(new_state.board[s.blank],new_state.board[s.blank-1]);
-    new_state.blank = s.blank - 1;
+    swap(new_state[blank],new_state[blank-1]);
     break;	
   }
   return new_state;
