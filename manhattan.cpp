@@ -4,7 +4,7 @@
 */
 #include <iostream>
 using namespace std;
-int map[16];
+int map_[16];
 
 int distM[16][16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                    1,0,1,2,2,1,2,3,3,2,3,4,4,3,4,5,
@@ -26,22 +26,22 @@ int distM[16][16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 int mapper (char* tablero){
   for (int i=0;i<16;i++){
     switch(tablero[i]){
-    case 'a': map[i]=1; break;
-    case 'b': map[i]=2; break;
-    case 'c': map[i]=3; break;
-    case 'd': map[i]=4; break;
-    case 'e': map[i]=5; break;
-    case 'f': map[i]=6; break;
-    case 'g': map[i]=7; break;
-    case 'h': map[i]=8; break;
-    case 'i': map[i]=9; break;
-    case 'j': map[i]=10; break;
-    case 'k': map[i]=11; break;
-    case 'l': map[i]=12; break;
-    case 'm': map[i]=13; break;
-    case 'n': map[i]=14; break;
-    case 'o': map[i]=15; break;
-    case 'x': map[i]=0; break;
+    case 'a': map_[i]=1; break;
+    case 'b': map_[i]=2; break;
+    case 'c': map_[i]=3; break;
+    case 'd': map_[i]=4; break;
+    case 'e': map_[i]=5; break;
+    case 'f': map_[i]=6; break;
+    case 'g': map_[i]=7; break;
+    case 'h': map_[i]=8; break;
+    case 'i': map_[i]=9; break;
+    case 'j': map_[i]=10; break;
+    case 'k': map_[i]=11; break;
+    case 'l': map_[i]=12; break;
+    case 'm': map_[i]=13; break;
+    case 'n': map_[i]=14; break;
+    case 'o': map_[i]=15; break;
+    case 'x': map_[i]=0; break;
     }
   }
   return 0;
@@ -49,16 +49,14 @@ int mapper (char* tablero){
 
 int heuristics (char* tablero){
   int h=0;
-  //int j[16]={7,15,8,2,13,6,3,12,11,0,4,10,9,5,1,14};
   mapper(tablero);
   for (int i=0;i<16;i++){
-    h+=distM[map[i]][i];
- cout<<h;
+    h+=distM[map_[i]][i];
   }
   return h;
 }
 
-int main(){
+/*int main(){
   int h;
   char test[16]={'a','b','x','c','d','e','f','g','h','i','j','k','l','m','n','o'};
 
@@ -69,4 +67,4 @@ cout<<'/';
  cout<<test[i];
   }
   return 0;
-}
+  }*/
