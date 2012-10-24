@@ -172,8 +172,11 @@ node make_node(node *n, char a, char s[],int c){
 }
 
 char* action(char s[], int blank, char a){
-  char *new_state;
-  new_state = s;
+  char new_state[16];
+
+  for(int i = 0 ; i  < 16 ; i++)
+    new_state[i] = s[i];
+
   switch(a){
   case 'U':
     swap(new_state[blank],new_state[blank-4]);
@@ -188,5 +191,10 @@ char* action(char s[], int blank, char a){
     swap(new_state[blank],new_state[blank-1]);
     break;	
   }
-  return new_state;
+  
+  char *new__state;
+
+  new__state=new_state;
+
+  return new__state;
 }
