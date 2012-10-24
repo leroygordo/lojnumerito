@@ -19,7 +19,7 @@ public:
   int cost;
 
   node()
-    :blank(0),parent(0),action(0),cost(0)
+    :blank(0),parent(NULL),action(0),cost(0)
   {
   }
 
@@ -103,6 +103,8 @@ bool is_goal(){
       if(i != 15) 
 	return false;
       break;
+    default:
+      return false;
     }
   }
   return true;
@@ -111,17 +113,17 @@ bool is_goal(){
 char* succ() {
   char* succ_ = (char *) malloc(4 * sizeof(char));
   if((blank - 4) >= 0) {
-    succ_[0] = 'U';
+    succ_[1] = 'U';
   }
   else {
-    succ_[0] = 'W';
+    succ_[1] = 'W';
   }
     
   if((blank + 4) <= 15) {
-    succ_[1] = 'D';
+    succ_[3] = 'D';
   }
   else {
-    succ_[1] = 'W';	  
+    succ_[3] = 'W';	  
   }
     
   if((blank + 1) % 4 != 0) {
@@ -132,10 +134,10 @@ char* succ() {
   }
     
   if(!(blank % 4 == 0)) {
-    succ_[3] = 'L';
+    succ_[0] = 'L';
   }
   else {
-    succ_[3] = 'W';	
+    succ_[0] = 'W';	
   }
     
   return succ_;
@@ -144,9 +146,10 @@ char* succ() {
   
 list<char> extract_solution(){
   list<char> path;
-  node *n_ = parent;
-  while (!n_->parent) {
+  node *n_ = this;
+  while (n_ != NULL) {
     path.push_front(n_->action);
+    cout << n_ << endl;
     n_ = n_->parent;
   }
   return path;
@@ -167,12 +170,13 @@ node make_root(char s[]){
  }
   
 node make_node(node *n, char a, char s[],int c){
+  //cout << s << endl;
   node n_ = node(s,0,n,a,(n->cost+1)+c);
   return n_;
 }
 
 char* action(char s[], int blank, char a){
-  char new_state[16];
+  char *new_state =  (char *) malloc(16 * sizeof(char));
 
   for(int i = 0 ; i  < 16 ; i++)
     new_state[i] = s[i];
@@ -191,10 +195,6 @@ char* action(char s[], int blank, char a){
     swap(new_state[blank],new_state[blank-1]);
     break;	
   }
-  
-  char *new__state;
 
-  new__state=new_state;
-
-  return new__state;
+  return new_state;
 }
