@@ -51,11 +51,42 @@ int heuristics (char* tablero){
   int h=0;
   mapper(tablero);
   for (int i=0;i<16;i++){
-    h+=distM[map_[i]][i];
+    h+=distM[map_[i]][i]; // map_i: lo que hay e i:lo que deberia haber
   }
   return h;
 }
 
+
+int heuristics2 (char* tablero){
+  int h=0;
+  mapper(tablero);
+  for (int i=0;i<4;i++)
+    for (int j=0;j<4;j++){
+      int posi=i+2*j;
+      h+=distM[map_[posi]][posi];
+      for (int k=i;k<4;k++){ // verifica en la misma fila
+        int posi_k=k+2*j;        
+        // ve si ambos deberian ir en la misma fila
+        if ((i == map_[posi] / 4) && (i == map_[posi_k] / 4)){
+          // ve si el orden esta invertido
+          if(map_[posi] > map_[posi_k]){
+            h+=2;
+          }          
+        }
+      }
+      for (int k=j;k<4;k++){ // verifica en la misma columna
+        int posi_k=i+2*k;        
+        // ve si ambos deberian ir en la misma fila
+        if ((i == map_[posi] % 4) && (i == map_[posi_k] % 4)){
+          // ve si el orden esta invertido
+          if(map_[posi] > map_[posi_k]){
+            h+=2;
+          }          
+        }
+      }
+    }
+  return h;
+}
 /*int main(){
   int h;
   char test[16]={'a','b','x','c','d','e','f','g','h','i','j','k','l','m','n','o'};

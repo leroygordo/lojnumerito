@@ -25,7 +25,7 @@ pair<list<char>,int> DFS_acotado(int t, node n){
   }
 
   if (n.is_goal()){
-    c_out=*(n.extract_solution());
+    c_out=n.extract_solution();
     answ.first=c_out;
     answ.second=n.cost;
     return answ;
@@ -89,9 +89,5 @@ int main(){
   char test[16]={'a','b','x','c','d','e','f','g','h','i','j','k','l','m','n','o'};
   pair <list<char>,int> result;
   result= ida_star(test,1);
-  // for (list<char>::iterator itr=(result->l).begin(),lim=(result->l).end();itr!=lim;itr++){
-   //cout<<*itr<<'-';
-  //}
-  
   return 0;
 }
